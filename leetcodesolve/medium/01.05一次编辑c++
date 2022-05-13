@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool oneEditAway(string first, string second) {
+        bool result = false;
+        if(first.size() < second.size()) {
+            string temp = first;
+            first = second;
+            second = temp;
+        }        
+        if(first.size()-second.size() > 1) return result;
+        else {
+            int j = 0, n = 0;
+            for(int i = 0; i < first.size(); i++) {
+                if(first[i] == second[j]) {j++;continue;}
+                if(first[i] != second[j] && first.size() > second.size()) {n++;}
+                if(first[i] != second[j] && first.size() == second.size()){j++;n++;}
+            }
+
+            if(n < 2) result = true;        
+        }
+    return result;
+    }
+};
