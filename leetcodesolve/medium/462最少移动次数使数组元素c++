@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int minMoves2(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        float temp = 0;
+        int zhongjian = 0,res = 0;//主要就是找到中间元素
+        if(nums.size() % 2 == 0) {
+            int a = nums.size() / 2;
+            temp = (float(nums[a])+ float(nums[a-1])) /2;
+            if(nums[a] - temp > nums[a-1] - temp)zhongjian = nums[a-1];
+            else zhongjian = nums[a];
+        }
+        else {
+            int a = nums.size() / 2;
+            zhongjian = nums[a];
+        }
+        for(int i = 0; i < nums.size();i++) {
+            res += abs(nums[i] - zhongjian);
+        }
+        return res;
+
+    }
+};
