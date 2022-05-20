@@ -19,6 +19,23 @@ class Solution {
 //     }
 // };//直接暴力，超出时间限制了
 
-
-
+//还是map方便emm
+class Solution {
+    using p = pair<int,int>;
+public:
+    vector<int> findRightInterval(vector<vector<int>>& intervals) {
+        map<int,int> m;
+        for(int i = 0; i < intervals.size(); ++i){
+            m[intervals[i][0]] = i;
+        }
+        vector<int> ans;
+        for(int i = 0; i < intervals.size(); ++i){
+            int start = intervals[i][0],end = intervals[i][1];
+            auto it = m.lower_bound(end);
+            if(it != m.end()) ans.push_back(it->second);
+            else ans.push_back(-1);
+        }
+        return ans;
+    }
+};
 
