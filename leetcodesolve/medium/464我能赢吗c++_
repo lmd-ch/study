@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<short>vis;//标记状态
+    int n,t;
+    bool dfs(int p,int cur){
+        bool flag = 0;
+        if(vis[p]!=-1)return vis[p];
+        for(int i=n;i>=1;--i){
+            int j = 1<<(i-1), x = p|j;
+            if(((p&j)==0)){
+                if(cur+i>=t)return 1;//满足条件直接返回胜利
+                flag |= !dfs(x,cur+i);//只要有一种方法让对手输就用这种
+            }
+        }
+        return vis[p]=flag;
+    }
+    bool canIWin(int ma, int dt) {
+        if(dt<=ma)return 1;
+        if(ma*(ma+1)/2<dt)return 0;
+        n=ma,t=dt;
+        vis = vector<short>(1<<n,-1);
+        return dfs(0,0);
+    }
+};
