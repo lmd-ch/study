@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int left = 0, right = nums.size() -1//先设置左右，注意右边要减去1，因为nums数组标号最多到size-1
+        while(left <= right){
+            int mid = (right - left) / 2 + left; 
+            int temp = nums[mid];     //中间数
+            if (temp == target) return mid;
+            else if (temp > target)right = mid - 1;
+            else left = mid + 1;
+        }
+        return -1;
+    }
+};
