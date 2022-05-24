@@ -1,0 +1,23 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool isUnivalTree(TreeNode* root) {
+        return isUnivalTree(root, root->val);
+    }
+    bool isUnivalTree(TreeNode* root, int num) {
+        if(!root)return true;
+        if(root->val != num)return false;
+        if(!isUnivalTree(root->left,num) ||!isUnivalTree(root->right,num))return false;
+        return true;
+    }
+};//递归就完事了，有空写写非递归。。
