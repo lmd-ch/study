@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int findSubstringInWraproundString(const string& s) {
+        int l = 0;
+        int len[26] = {0};
+        for (int i = 0; i < s.size(); ++i) {
+            if ((s[l] - 'a' + (i - l)) % 26 + 'a' != s[i]) {
+                l = i--;
+            } else {
+                len[s[i] - 'a'] = max(len[s[i] - 'a'], i - l + 1);
+            }
+        }
+        return accumulate(len, len + 26, 0);
+    }
+};
