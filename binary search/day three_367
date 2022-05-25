@@ -1,0 +1,18 @@
+class Solution {
+public:
+    bool isPerfectSquare(int num) {
+        int left = 0, right = num; 
+        while(left <= right) {
+            long long temp = (left + right)/2;
+            long long tt = temp * temp;
+            if(tt > num) right = temp -1;
+            else if(tt < num){
+                left = temp + 1;
+            }
+            else {
+                return true;
+            }
+        }
+        return false;
+    }
+};
