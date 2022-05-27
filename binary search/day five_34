@@ -1,0 +1,34 @@
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int l1 = 0,l2 =0,r1 = nums.size()-1,r2 = nums.size()-1;
+        while(l1 <= r1) {
+            int mid1 = l1 + (r1 - l1 )/2;
+            if(nums[mid1] < target) {
+                l1 = mid1 + 1;
+            }
+            else{
+                r1 = mid1 - 1;
+            }
+        }
+        l1 = (l1 == nums.size() || nums[l1] != target) ? -1 : l1;
+
+        while(l2 <= r2) {
+            int mid2 = l2 + (r2 - l2 )/2;
+            if(nums[mid2] <= target) {
+                l2 = mid2 + 1;
+            }
+            else{
+                r2 = mid2 - 1;
+            }
+        }
+        if(r2 > -1) {
+            if(nums[r2] != target) r2 = -1;
+        }
+
+        vector<int>res = {l1,r2};
+        return res;
+    }
+};
+//这题主要是用到了教程中的两种方法，一方面是找出lower_bound，当lower_bound不等或者到达最长的时候，将其值赋为-1
+//然后是找到小于等于的下标，特别坑的一点在于当r2 = -1 的时候不能用nums[r2]来判断，所以要加一个条件，这弄了好久才发现。
