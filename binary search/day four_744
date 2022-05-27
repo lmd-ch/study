@@ -1,6 +1,25 @@
 class Solution {
 public:
     char nextGreatestLetter(vector<char>& letters, char target) {
+        char ans = letters[0];
+        for(int i = 0; i < letters.size(); i++) {
+            if(letters[i] - target > 0) {
+                ans = letters[i];
+                break;
+            }
+        }
+      return ans;  
+    }
+    //直接顺序查找下来其实也很快
+};
+
+
+
+
+
+class Solution {
+public:
+    char nextGreatestLetter(vector<char>& letters, char target) {
         int l = 0, r = letters.size()-1;
         while(l <= r) {
             cout<<l<<r;
@@ -11,4 +30,4 @@ public:
         l == letters.size() ? -1 : l;
         return letters[l % letters.size()];
     }
-};
+};//主要是练习二分，所以还是得用一下
