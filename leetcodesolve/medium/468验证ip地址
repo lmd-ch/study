@@ -1,0 +1,59 @@
+//条件太多了不想写，题解就归纳的很好，自己写了IPv4的部分就受不了了，实在是太多if了
+//把题解看看懂也算刷了一题了哈哈哈
+class Solution {
+public:
+    string validIPAddress(string queryIP) {
+        if (queryIP.find('.') != string::npos) {//做这题主要学到的一个是string::npos，npos可以表示string的结束位子，是string::type_size 类型的，
+                                                //也就是find（）返回的类型。find函数在找不到指定值得情况下会返回string::npos。
+            // IPv4
+            int last = -1;
+            for (int i = 0; i < 4; ++i) { //IPv4有四个数组，当找到最后一个的时候结尾就是总字符串的结尾，否则可以接着找
+                int cur = (i == 3 ? queryIP.size() : queryIP.find('.', last + 1)); //从上一次的'.'之后开始找下一个'.'
+                if (cur == string::npos) {//这部分容易忘
+                    return "Neither";
+                }
+                if (cur - last - 1 < 1 || cur - last - 1 > 3) { //为空或者大于4个数
+                    return "Neither";
+                }
+                int addr = 0;
+                for (int j = last + 1; j < cur; ++j) {
+                    if (!isdigit(queryIP[j])) {
+                        return "Neither";
+                    }
+                    addr = addr * 10 + (queryIP[j] - '0');//转化成数字，我自己用的是stoi()，但是由于要考虑到不能首数字是0，所以还是题解的好
+                }
+                if (addr > 255) {
+                    return "Neither";
+                }
+                if (addr > 0 && queryIP[last + 1] == '0') {//当和大于0的时候首数字是0不行
+                    return "Neither";
+                }
+                if (addr == 0 && cur - last - 1 > 1) {//00不行，这也容易忘啊啊啊！
+                    return "Neither";
+                }
+                last = cur;
+            }
+            return "IPv4";
+        }
+        else {
+            // IPv6
+            int last = -1;
+            for (int i = 0; i < 8; ++i) {
+                int cur = (i == 7 ? queryIP.size() : queryIP.find(':', last + 1));//总共有八个部分
+                if (cur == string::npos) {
+                    return "Neither";
+                }
+                if (cur - last - 1 < 1 || cur - last - 1 > 4) {
+                    return "Neither";
+                }
+                for (int j = last + 1; j < cur; ++j) {
+                    if (!isdigit(queryIP[j]) && !('a' <= tolower(queryIP[j]) && tolower(queryIP[j]) <= 'f')) {
+                        return "Neither";
+                    }
+                }
+                last = cur;
+            }
+            return "IPv6";
+        }
+    }
+};//主要还是看细心吧emmm
