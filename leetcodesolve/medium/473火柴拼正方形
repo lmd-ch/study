@@ -1,0 +1,83 @@
+//自己写的有问题的算法
+//一开始我的想法是正方形的边长肯定是能从最大的再从最小往上加，加到正好就是有，加的超过了就是没有
+//后来思考了一下，发现如果都是不同的数字，那么是可以的，因为大的数字可以用小的加起来
+//但是如果数字相同的话，比较大的那个数字就不能通过小数相加，例如[5,5,5,5,4,4,4,4,3,3,3,3]，边长是12，但是5+3+3+3大于了12。错误的思想，引以为戒。。
+class Solution {
+public:
+    bool makesquare(vector<int>& matchsticks) {
+        int n = accumulate(matchsticks.begin(),matchsticks.end(),0);
+        int a = 0;
+        if(n % 4 != 0) return false;
+        else{
+            a = n / 4;
+        }
+        sort(matchsticks.begin(),matchsticks.end());
+        int l = 0 , r = matchsticks.size() -1 , flag = 4 ,bian = 0;
+        while(flag > 0) {
+            if(matchsticks[r] > a)return false;
+            else if(matchsticks [r] == a){
+                flag--;
+                r--;
+            }
+            else {
+                long start = matchsticks[r] + matchsticks[l];
+                if(start > a)return false;
+                else if(start == a) {
+                    l--;
+                    r++;
+                    flag--;
+                }
+                else {
+                    while(start < a){
+                        l++;
+                        start = start + matchsticks[l];
+                    }
+                    if(start > a)return false;
+                    else if(start == a) {
+                        l--;
+                        r++;
+                        flag--;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+};
+
+
+//评论中
+class Solution {
+    int a;
+    vector<int> matchsticks;
+    int l[4];
+    bool result = false;
+    void dfs(int depth) {
+        if(depth==matchsticks.size()) {
+            result = true;
+            return;
+        }
+        for(int i=0;i<4;i++) {
+            if(l[i]+matchsticks[depth]<=a) {
+                l[i] += matchsticks[depth];
+                dfs(depth+1);
+                if(result) return;
+                l[i] -= matchsticks[depth];
+            }
+        }
+    }
+public:
+    bool makesquare(vector<int>& matchsticks) {
+        int sum = 0;
+        for(int i=0;i<matchsticks.size();i++) {
+            sum += matchsticks[i];
+        }
+        if(sum % 4 != 0) return false;
+        a = sum / 4;
+        sort(matchsticks.begin(), matchsticks.end(), greater<int>());
+        if(matchsticks[0]>a) return false;
+        this->matchsticks = matchsticks;
+        dfs(0);
+        return result;
+    }
+};
